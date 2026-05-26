@@ -1,0 +1,37 @@
+{
+  "name": "universal-auth-stripe-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Universal auth + Stripe backend system for Express apps",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "dev:client": "pnpm --dir client dev",
+    "build": "tsc -p tsconfig.json",
+    "build:client": "pnpm --dir client build",
+    "start": "node --enable-source-maps dist/server.js",
+    "check": "tsc --noEmit",
+    "scan:app": "tsx src/scanner.ts",
+    "railway:sync-env": "powershell -ExecutionPolicy Bypass -File scripts/sync-railway-env.ps1",
+    "vault:gen-key": "node -e \"console.log(require('node:crypto').randomBytes(32).toString('base64'))\""
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.36.4",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "postgres": "^3.4.5",
+    "stripe": "^17.4.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.7",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "drizzle-kit": "^0.27.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
