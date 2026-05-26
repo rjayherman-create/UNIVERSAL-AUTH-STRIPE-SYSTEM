@@ -32,10 +32,34 @@ app.use(
 
 app.use(cookieParser())
 
-app.get("/", (_req, res) => {
+app.get("/", (req, res) => {
   const clientUrl = process.env.CLIENT_URL?.replace(/\/$/, "")
 
   if (clientUrl) {
+    const requestHost = (req.get("x-forwarded-host") || req.get("host") || "").toLowerCase()
+
+    try {
+      const clientHost = new URL(clientUrl).host.toLowerCase()
+
+      if (requestHost && clientHost === requestHost) {
+        return res.status(200).json({
+          ok: true,
+          message: "API is running",
+          health: "/health",
+          warning: "CLIENT_URL points to this API host and causes redirect loops",
+          expectedClientUrl: "https://<your-frontend-domain>"
+        })
+      }
+    } catch {
+      return res.status(200).json({
+        ok: true,
+        message: "API is running",
+        health: "/health",
+        warning: "CLIENT_URL is invalid",
+        expectedClientUrl: "https://<your-frontend-domain>"
+      })
+    }
+
     return res.redirect(302, clientUrl)
   }
 
