@@ -32,6 +32,21 @@ app.use(
 
 app.use(cookieParser())
 
+app.get("/", (_req, res) => {
+  const clientUrl = process.env.CLIENT_URL?.replace(/\/$/, "")
+
+  if (clientUrl) {
+    return res.redirect(302, clientUrl)
+  }
+
+  return res.status(200).json({
+    ok: true,
+    message: "API is running",
+    health: "/health",
+    frontend: null
+  })
+})
+
 // Stripe requires raw body for signature verification.
 app.post(
   "/api/stripe/webhook",
